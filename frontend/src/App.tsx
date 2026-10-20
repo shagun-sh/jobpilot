@@ -1,121 +1,110 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [resume, setResume] = useState<File | null>(null)
+  const [jobDescription, setJobDescription] = useState('')
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
+    <div className="app">
+      <header className="navbar">
+        <a className="brand" href="#">
+          <span className="brand-icon">J</span>
+          JobPilot
+        </a>
+        <span className="nav-label">AI Career Assistant</span>
+      </header>
+
+      <main className="main-content">
+        <section className="hero">
+          <span className="eyebrow">YOUR CAREER, YOUR NEXT STEP</span>
+          <h1>Find the right job for <span>your skills.</span></h1>
           <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+            Upload your resume, add a job description, and prepare to
+            understand how well your skills match the role.
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+        </section>
 
-      <div className="ticks"></div>
+        <section className="workspace">
+          <div className="section-heading">
+            <span className="step-number">01</span>
+            <div>
+              <h2>Upload your resume</h2>
+              <p>Start with your existing resume in PDF format.</p>
+            </div>
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <label className="upload-box" htmlFor="resume-upload">
+            <span className="upload-icon">↑</span>
+            <strong>
+              {resume ? resume.name : 'Choose your resume'}
+            </strong>
+            <span>
+              {resume
+                ? `${(resume.size / 1024).toFixed(1)} KB selected`
+                : 'Select a PDF file from your computer'}
+            </span>
+            <span className="browse-button">Browse files</span>
+            <input
+              id="resume-upload"
+              type="file"
+              accept=".pdf,application/pdf"
+              onChange={(event) => {
+                const file = event.target.files?.[0] ?? null
+                setResume(file)
+              }}
+            />
+          </label>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+          <div className="section-heading job-heading">
+            <span className="step-number">02</span>
+            <div>
+              <h2>Add the job description</h2>
+              <p>Paste the requirements for the role you want.</p>
+            </div>
+          </div>
+
+          <textarea
+            className="job-input"
+            placeholder="Paste the job description here...&#10;&#10;Include the role, required skills, qualifications and responsibilities."
+            value={jobDescription}
+            onChange={(event) => setJobDescription(event.target.value)}
+            rows={7}
+          />
+
+          <div className="form-footer">
+            <span>PDF only · Maximum file size: 5 MB</span>
+            <button
+              className="analyze-button"
+              type="button"
+              disabled
+              title="Available after the backend API is connected"
+            >
+              Analyze my match <span>→</span>
+            </button>
+          </div>
+
+          <p className="coming-soon">
+            Resume analysis will be enabled after the backend is connected.
+          </p>
+        </section>
+
+        <section className="info-card">
+          <span className="info-icon">✦</span>
+          <div>
+            <h3>Understand your strengths</h3>
+            <p>
+              The planned analysis will identify matching skills, highlight
+              missing requirements, and suggest possible next steps.
+            </p>
+          </div>
+        </section>
+
+        <footer className="footer">
+          JobPilot · Built to help students make informed career decisions.
+        </footer>
+      </main>
+    </div>
   )
 }
 
